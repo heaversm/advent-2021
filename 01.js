@@ -1,4 +1,4 @@
-import depthArray from "./depthArray.js";
+import depthArray from "./01-data.js";
 const depths = depthArray();
 let curDepth = depths[0],
   depthIncreaseCount = 0;

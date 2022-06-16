@@ -1,4 +1,4 @@
-import { bingoDrawOrder, bingoBoards } from "./bingoData.js";
+import { bingoDrawOrder, bingoBoards } from "./04-data.js";
 const BOARD_COLS = 5;
 const BOARD_ROWS = 5;
 

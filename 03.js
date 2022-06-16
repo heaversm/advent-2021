@@ -1,4 +1,4 @@
-import diagnosticArray from "./diagnosticArray.js";
+import diagnosticArray from "./03-data.js";
 const diagnosticsData = diagnosticArray();
 
 const bitArrays = [];
