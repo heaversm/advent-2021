@@ -2,13 +2,22 @@ import { bingoDrawOrder, bingoBoards } from "./bingoData.js";
 const BOARD_COLS = 5;
 const BOARD_ROWS = 5;
 
-let foundCount = 0;
 let winningBoard = false;
 
-const bingoMatches = new Array(bingoBoards.length).fill(new Array(25));
+const bingoMatches = [];
 
 function init() {
+  buildMatchBoard();
   markMatches();
+}
+
+function buildMatchBoard() {
+  for (let i = 0; i < bingoBoards.length; i++) {
+    bingoMatches.push([]);
+    for (let j = 0; j < BOARD_COLS * BOARD_ROWS; j++) {
+      bingoMatches[i].push(null);
+    }
+  }
 }
 
 function getMatchRow(foundIndex) {
@@ -52,18 +61,16 @@ function checkForWin(boardIndex, foundIndex) {
 
   const matchRow = getMatchRow(foundIndex);
   const rowArray = getRowArray(matchRow, bingoMatches[boardIndex]);
-  if (rowArray.indexOf(undefined) === -1) {
-    console.log("rowArray", rowArray, matchRow);
+  if (rowArray.indexOf(null) === -1) {
+    //there are no null values in this row, we have a winner
     return true;
   }
   const matchCol = getMatchCol(foundIndex);
   const colArray = getColArray(matchCol, bingoMatches[boardIndex]);
-  if (colArray.indexOf(undefined) === -1) {
-    console.log("colArray", colArray, matchCol);
-
+  if (colArray.indexOf(null) === -1) {
+    //there are no null values in this col, we have a winner
     return true;
   }
-  //console.log(rowArray, matchRow, colArray, matchCol);
   return false;
 }
 
@@ -74,38 +81,39 @@ function markMatches() {
       const bingoBoard = bingoBoards[boardIndex];
       const foundIndex = bingoBoard.indexOf(bingoNumber);
       if (foundIndex !== -1) {
-        //console.log("match found", foundIndex, boardIndex);
-        bingoMatches[boardIndex][foundIndex] = "x";
+        const bingoMatchBoard = bingoMatches[boardIndex];
+        bingoMatchBoard[foundIndex] = "x";
         winningBoard = checkForWin(boardIndex, foundIndex);
 
         //if winning board, we have all we need to generate the answer
         //need to identify the board in question
         //need to find sum of all unmarked numbers on that board
         //need to multiply that sum by "bingoNumber" to get answer
+
         if (winningBoard) {
           const winningBoardArray = bingoBoards[boardIndex];
           const winningMatchArray = bingoMatches[boardIndex];
-          console.log("winner!");
-          console.log("Board and Winning Number: ", boardIndex, bingoNumber);
-          console.log("winning board: ", winningBoardArray, boardIndex);
-          console.log("array of matches: ", winningMatchArray);
+
+          //console.log("winning board: ", winningBoardArray, boardIndex);
+
+          //construct an array of unmarked numbers
           const unMarkedNumberArray = [];
-          winningMatchArray.forEach((boardVal, matchIndex) => {
-            const unmarkedNumber = winningBoardArray[matchIndex];
-            if (unmarkedNumber) {
+          for (let j = 0; j < BOARD_COLS * BOARD_ROWS; j++) {
+            const matchCheck = winningMatchArray[j];
+            if (!matchCheck) {
+              const unmarkedNumber = winningBoardArray[j];
               unMarkedNumberArray.push(unmarkedNumber);
             }
-          });
-          console.log("unmarked numbers", unMarkedNumberArray);
+          }
+
           const unmarkedNumberSum = unMarkedNumberArray.reduce(
             (prev, current) => prev + current
           );
-          console.log("unmarked number sum", unmarkedNumberSum);
-          console.log("bingo number", bingoNumber);
+          // console.log("unmarked number sum", unmarkedNumberSum);
+          // console.log("bingo number", bingoNumber);
           const bingoAnswer = unmarkedNumberSum * bingoNumber;
           console.log("answer", bingoAnswer);
         }
-        foundCount++;
       }
       if (winningBoard) {
         break;
