@@ -75,7 +75,7 @@ function drawVentDiagram(){
     //console.log(loopX,loopY);
     const isHorizontal = thisVentData.direction === 0;
     const dif = isHorizontal ? Math.abs(endX - startX) : Math.abs(endY-startY);
-    for (let j = 0; j<dif;j++){
+    for (let j = 0; j<=dif;j++){
 
       let thisKey = `x${loopX}y${loopY}`;
     
