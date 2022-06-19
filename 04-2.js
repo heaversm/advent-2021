@@ -100,7 +100,6 @@ function markMatches() {
           //if there are still boards, we should remove this board from bingoBoards and bingoMatches arrays
           //and continue until there's only one board left.
           winningBoardsArr.push(boardIndex);
-          console.log(winningBoardsArr);
 
           if (winningBoardsArr.length < bingoBoards.length) {
             //still have to find the last board to win, skip the rest
